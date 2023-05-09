@@ -53,50 +53,59 @@ def compare_ddf():
     for column in data1.description:
         ddf_data1.append(column[0])
     
-
-
+    
+    #v0 Se seleccionan todas las variables de tipo loop:
+    rows = cursor1.execute('''SELECT DSCTableName FROM Levels''').fetchall()
+    if rows is not None: 
+        for element in rows:
+            print(element)
+            ddf_data1.append(element[0])
+            
+            
+ 
     # SELECT TableName FROM 'Levels' WHERE DSCTableName="DKIDS02" or DSCTableName="BOYSPEC1" or DSCTableName="GIRLSPEC1" or DSCTableName="resp_age_kid"
 
     #DKIDS02
     row = cursor1.execute('''SELECT TableName FROM Levels WHERE DSCTableName="DKIDS02"''').fetchone()
-    if row[0] != None:
+    if row is not None and row[0] != None:
         DKIDS02_query = "SELECT * FROM " + row[0]
         DKIDS02_data = cursor1.execute(DKIDS02_query)
 
-        ddf_data1.append('==== DKIDS02 Variables:')
+        #ddf_data1.append('** DKIDS02 Variables:')
         for column in DKIDS02_data.description:
             ddf_data1.append(column[0])
 
     #BOYSPEC1
     row = cursor1.execute('''SELECT TableName FROM Levels WHERE DSCTableName="BOYSPEC1"''').fetchone()
-    if row[0] != None:
+    if row is not None and row[0] != None:
         BOYSPEC1_query = "SELECT * FROM " + row[0]
         BOYSPEC1_data = cursor1.execute(BOYSPEC1_query)
 
-        ddf_data1.append('==== BOYSPEC1 Variables:')
+        #ddf_data1.append('** BOYSPEC1 Variables:')
         for column in BOYSPEC1_data.description:
             ddf_data1.append(column[0])
     
     #GIRLSPEC1
     row = cursor1.execute('''SELECT TableName FROM Levels WHERE DSCTableName="GIRLSPEC1"''').fetchone()
-    if row[0] != None:
+    if row is not None and row[0] != None:
         GIRLSPEC1_query = "SELECT * FROM " + row[0]
         GIRLSPEC1_data = cursor1.execute(GIRLSPEC1_query)
 
-        ddf_data1.append('==== GIRLSPEC1 Variables:')
+        #ddf_data1.append('** GIRLSPEC1 Variables:')
         for column in GIRLSPEC1_data.description:
             ddf_data1.append(column[0])
 
     #resp_age_kid
     row = cursor1.execute('''SELECT TableName FROM Levels WHERE DSCTableName="resp_age_kid"''').fetchone()
-    if row[0] != None:
+    if row is not None and row[0] != None:
         resp_age_kid_query = "SELECT * FROM " + row[0]
         resp_age_kid_data = cursor1.execute(resp_age_kid_query)
 
-        ddf_data1.append('==== resp_age_kid Variables:')
+        #ddf_data1.append('** resp_age_kid Variables:')
         for column in resp_age_kid_data.description:
             ddf_data1.append(column[0])
-
+            
+     
 # ============================================================================================================================ 
 
 
@@ -114,52 +123,57 @@ def compare_ddf():
         ddf_data2.append(column[0])
 
 
+    #v0 Se seleccionan todas las variables de tipo loop:
+    rows = cursor2.execute('''SELECT DSCTableName FROM Levels''').fetchall()
+    if rows is not None:
+        for element in rows:
+            print(element)
+            ddf_data2.append(element[0])
+
 
     # SELECT TableName FROM 'Levels' WHERE DSCTableName="DKIDS02" or DSCTableName="BOYSPEC1" or DSCTableName="GIRLSPEC1" or DSCTableName="resp_age_kid"
 
     #DKIDS02
     row = cursor2.execute('''SELECT TableName FROM Levels WHERE DSCTableName="DKIDS02"''').fetchone()
-    if row[0] != None:
+    if row is not None and row[0] != None:
         DKIDS02_query = "SELECT * FROM " + row[0]
         DKIDS02_data = cursor2.execute(DKIDS02_query)
 
-        ddf_data2.append('==== DKIDS02 Variables:')
+        #ddf_data2.append('** DKIDS02 Variables:')
         for column in DKIDS02_data.description:
             ddf_data2.append(column[0])
 
     #BOYSPEC1
     row = cursor2.execute('''SELECT TableName FROM Levels WHERE DSCTableName="BOYSPEC1"''').fetchone()
-    if row[0] != None:
+    if row is not None and row[0] != None:
         BOYSPEC1_query = "SELECT * FROM " + row[0]
         BOYSPEC1_data = cursor2.execute(BOYSPEC1_query)
 
-        ddf_data2.append('==== BOYSPEC1 Variables:')
+        #ddf_data2.append('** BOYSPEC1 Variables:')
         for column in BOYSPEC1_data.description:
             ddf_data2.append(column[0])
     
     #GIRLSPEC1
     row = cursor2.execute('''SELECT TableName FROM Levels WHERE DSCTableName="GIRLSPEC1"''').fetchone()
-    if row[0] != None:
+    if row is not None and row[0] != None:
         GIRLSPEC1_query = "SELECT * FROM " + row[0]
         GIRLSPEC1_data = cursor2.execute(GIRLSPEC1_query)
 
-        ddf_data2.append('==== GIRLSPEC1 Variables:')
+        #ddf_data2.append('** GIRLSPEC1 Variables:')
         for column in GIRLSPEC1_data.description:
             ddf_data2.append(column[0])
 
     #resp_age_kid
     row = cursor2.execute('''SELECT TableName FROM Levels WHERE DSCTableName="resp_age_kid"''').fetchone()
-    if row[0] != None:
+    if row is not None and row[0] != None:
         resp_age_kid_query = "SELECT * FROM " + row[0]
         resp_age_kid_data = cursor2.execute(resp_age_kid_query)
 
-        ddf_data2.append('==== resp_age_kid Variables:')
+        #ddf_data2.append('** resp_age_kid Variables:')
         for column in resp_age_kid_data.description:
             ddf_data2.append(column[0])
-
-
-
-    
+            
+   
 # ============================================================================================================================   
 
     
@@ -169,13 +183,23 @@ def compare_ddf():
 
     set_data2 = set(ddf_data2)
     ddf1_extra = [x for x in ddf_data1 if x not in set_data2]
+    ddf1_extra_filtered = [y for y in ddf1_extra if y.find(":") != 0]
+    while "LevelId:C1" in ddf1_extra_filtered:
+        ddf1_extra_filtered.remove("LevelId:C1")
+    
+    numbered_lis1 = [f"{i+1}. {s}" for i, s in enumerate(ddf1_extra_filtered)]
+        
+    
 
     set_data1 = set(ddf_data1)
     ddf2_extra = [x for x in ddf_data2 if x not in set_data1]
-
+    ddf2_extra_filtered = [y for y in ddf2_extra if y.find(":") != 0]
+    while "LevelId:C1" in ddf2_extra_filtered:
+        ddf2_extra_filtered.remove("LevelId:C1")
     
-
-
+    numbered_lis2 = [f"{i+1}. {s}" for i, s in enumerate(ddf2_extra_filtered)]
+    
+    
 
     file = filedialog.asksaveasfile(mode='w',
                                     defaultextension='.txt',
@@ -186,23 +210,23 @@ def compare_ddf():
     )
 
     # file.write(str(filePaths[0]))
-    file.write('===================================' + '\n')
+    file.write('===========================================' + '\n')
     file.write(os.path.basename(os.path.normpath(str(filePaths[0]))))
-    file.write(' - Exclusive variables:' + '\n')
-    file.write('===================================' + '\n')
+    file.write(' - Exclusive variables 1st File:' + '\n')
+    file.write('===========================================' + '\n')
 
 
-    file.write('\n'.join(ddf1_extra))
+    file.write('\n'.join(numbered_lis1))
 
 
     file.write('\n')
-    file.write('===================================' + '\n')
+    file.write('===========================================' + '\n')
     file.write(os.path.basename(os.path.normpath(str(filePaths[1]))))
-    file.write(' - Exclusive variables:' + '\n')
-    file.write('===================================' + '\n')
+    file.write(' - Exclusive variables 2nd File:' + '\n')
+    file.write('===========================================' + '\n')
 
 
-    file.write('\n'.join(ddf2_extra))
+    file.write('\n'.join(numbered_lis2))
     
     
     file.close()
@@ -210,7 +234,7 @@ def compare_ddf():
     
     # os.startfile('DDF_result.txt')
 
-
+    
 
     print("\n Exclusive data in " + str(filePaths[0]))
     print("\n")
@@ -221,10 +245,12 @@ def compare_ddf():
     print("\n Exclusive data in " + str(filePaths[1]))
     print("\n")
     print(ddf2_extra)
+        
+        
+    
 
 
-
-canvas = tk.Canvas(root, height=500, width=500, bg="#263D42")
+canvas = tk.Canvas(root, height=300, width=800, bg="#263D42")
 canvas.pack()
 
 frame = tk.Frame(root, bg="white")
